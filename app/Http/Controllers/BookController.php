@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Book;
 use Illuminate\Http\Request;
 
 class BookController extends Controller
@@ -13,7 +14,8 @@ class BookController extends Controller
      */
     public function index()
     {
-        //
+        //To get all books
+        return Book::all();
     }
 
     /**
@@ -24,7 +26,15 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //Validdation for the book
+        $request->validate([
+            'title' => 'required',
+            'author' => 'required',
+            'genre' => 'nullable'
+        ]);
+        //To store the book
+        $book = Book::create($request->all());
+        return $book;
     }
 
     /**
@@ -35,7 +45,8 @@ class BookController extends Controller
      */
     public function show($id)
     {
-        //
+        //To show a particular book
+        return Book::find($id);
     }
 
     /**
@@ -47,7 +58,9 @@ class BookController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        //To update the book
+        $book = Book::find($id)->update($request->all());
+        return $book;
     }
 
     /**
@@ -58,6 +71,19 @@ class BookController extends Controller
      */
     public function destroy($id)
     {
-        //
+        //To delete the post
+        return Book::destroy($id);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $name
+     * @return \Illuminate\Http\Response
+     */
+    public function search($name)
+    {
+        //To search for a post
+        return Book::where('name', 'like', '%'.$name.'%')->get();
     }
 }
