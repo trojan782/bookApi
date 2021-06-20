@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -28,5 +29,26 @@ class AuthController extends Controller
             'message' => 'you have been registered successfully!🎉'
         ];
         return response($response, 201);
+    }
+
+    //Function to login the user
+    public function login(Request $request) {
+        $data = $request->validate([
+            'email' => 'required|string',
+            'password' => 'required|string'
+        ]);
+
+        //Email check
+        $user = User::where('email', $data['email'])->first();
+
+        //password check
+        if(!$user || Hash::check($data['password'], $user->password)) {
+            return response([
+                'message' => 'Invalid Credentials'
+            ], 401);
+        }
+        else {
+            return response(['message' => 'You have logged in successfully!👋🏼'], 201);
+        }
     }
 }
