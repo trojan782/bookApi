@@ -14,4 +14,8 @@ class Book extends Model
         'genre'
     ];
 
+
+    public function owner() {
+        return $this->hasOne(User::class);
+    }
 }
