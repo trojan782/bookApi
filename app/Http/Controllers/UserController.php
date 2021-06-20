@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -13,7 +15,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        //To get all users
+        return User::all();
     }
 
     /**
@@ -35,7 +38,8 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        //To show a particular user
+        return User::find($id);
     }
 
     /**
@@ -47,7 +51,13 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        //To update the user details
+        if($request->email !== Auth::user()->email) {
+            return response(['message' => 'You are not authorized to perform this action', 401]);
+        }
+        else {
+            return User::find($id)->update($request->all());
+        }
     }
 
     /**
