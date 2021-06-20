@@ -22,11 +22,11 @@ class AuthController extends Controller
             'email' => $data['email'],
             'password' => bcrypt($data['password'])
         ]);
-        
+
         $response = [
             'user' => $user,
             'message' => 'you have been registered successfully!🎉'
         ];
-        return response(201, $response);
+        return response($response, 201);
     }
 }
