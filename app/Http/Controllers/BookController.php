@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Book;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class BookController extends Controller
 {
@@ -34,7 +35,12 @@ class BookController extends Controller
         ]);
         //To store the book
         $book = Book::create($request->all());
-        return $book;
+        $response = [
+            'book' => $book,
+            'message' => 'You have added the book successfully ✅',
+            'user' => Auth::user()
+        ];
+        return response($response, 201);
     }
 
     /**
