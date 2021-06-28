@@ -28,17 +28,22 @@ class BookController extends Controller
     public function store(Request $request)
     {
         //Validdation for the book
-        $request->validate([
+        $data = $request->validate([
             'title' => 'required',
             'author' => 'required',
             'genre' => 'nullable'
         ]);
         //To store the book
-        $book = Book::create($request->all());
+        $book = Book::create([
+            'user_id' => Auth::user()->id,
+            'title' => $data['title'],
+            'author' => $data['author'],
+            'genre' => $data['genre']
+        ]);
+
         $response = [
             'book' => $book,
             'message' => 'You have added the book successfully ✅',
-            'user' => Auth::user()
         ];
         return response($response, 201);
     }
