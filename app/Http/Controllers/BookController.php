@@ -83,7 +83,21 @@ class BookController extends Controller
     public function destroy($id)
     {
         //To delete the post
-        return Book::destroy($id);
+        $del =  Book::destroy($id);
+        if($del) {
+            $response = [
+                'status' => $del,
+                'message' => 'Book deleted successfully'
+            ];
+            return response($response, 201);
+        }
+        else {
+            $response =[
+                'status' => $del,
+                'message' => 'Book id does not exist'
+            ];
+            return response($response);
+        }
     }
 
     /**
